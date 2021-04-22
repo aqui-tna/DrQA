@@ -1,0 +1,653 @@
+
+{
+  "name": "hitvoice/DrQA",
+  "url": "https://github.com/aqui-tna/DrQA",
+  "python_version": "3.5",
+  "requirements": {
+    "req_file": "requirements.txt",
+    "pip": [
+      "torch"
+    ],
+    "others": [
+      "tar"
+    ]
+  },
+  "to_run": {
+      "decision": false,
+      "reason": "The project uses deprecated functions and libraries"
+  },
+  "entries": [
+      {
+        "cmd": "python prepro.py",
+        "main": "prepro.py",
+        "steps": [
+            "prepare the data"
+        ],
+        "args_lib": "argparse",
+        "args": [
+          {
+              "names": [
+                  "--trn_file"
+              ],
+              "input": true,
+              "dest": "trn_file",
+              "ex_has_default": true,
+              "default": "SQuAD/train-v1.1.json",
+              "type": "str",
+              "mandatory": false
+          },
+          {
+              "names": [
+                  "--dev_file"
+              ],
+              "input": true,
+              "dest": "dev_file",
+              "ex_has_default": true,
+              "default": "SQuAD/dev-v1.1.json",
+              "type": "str",
+              "mandatory": false
+          },
+          {
+              "names": [
+                  "--wv_file"
+              ],
+              "input": true,
+              "dest": "wv_file",
+              "ex_has_default": true,
+              "default": "glove/glove.840B.300d.txt",
+              "type": "str",
+              "mandatory": false
+          },
+          {
+              "names": [
+                  "--wv_dim"
+              ],
+              "input": true,
+              "dest": "wv_dim",
+              "ex_has_default": true,
+              "default": 300,
+              "type": "float",
+              "mandatory": false
+          },
+          {
+              "names": [
+                  "--wv_cased"
+              ],
+              "input": true,
+              "dest": "wv_cased",
+              "ex_has_default": true,
+              "default": true,
+              "type": "float",
+              "mandatory": false
+          },
+          {
+              "names": [
+                  "--sort_all"
+              ],
+              "input": false,
+              "dest": "sort_all",
+              "ex_has_default": true,
+              "default": false,
+              "type": "float",
+              "mandatory": false
+          },
+          {
+              "names": [
+                  "--sample_size"
+              ],
+              "input": true,
+              "dest": "sample_size",
+              "ex_has_default": true,
+              "default": 0,
+              "type": "float",
+              "mandatory": false
+          },
+          {
+              "names": [
+                  "--threads"
+              ],
+              "input": true,
+              "dest": "threads",
+              "ex_has_default": true,
+              "default": 16,
+              "type": "float",
+              "mandatory": false
+          },
+          {
+              "names": [
+                  "--batch_size"
+              ],
+              "input": true,
+              "dest": "batch_size",
+              "ex_has_default": true,
+              "default": 64,
+              "type": "float",
+              "mandatory": false
+          }
+      ],
+        "ins": [
+            {
+            "type": "file",
+            "location": "https://rajpurkar.github.io/SQuAD-explorer/dataset/train-v1.1.json",
+            "artifact": "dataset",
+            "ex_from": "manual",
+            "ex_in_repo": false
+            },
+            {
+              "type": "file",
+              "location": "https://rajpurkar.github.io/SQuAD-explorer/dataset/dev-v1.1.json",
+              "artifact": "dataset",
+              "ex_from": "manual",
+              "ex_in_repo": false
+              },
+              {
+                "type": "file",
+                "location": "http://nlp.stanford.edu/data/glove.840B.300d.zip",
+                "artifact": "dataset",
+                "ex_from": "manual",
+                "ex_in_repo": false
+                }
+        ],
+        "outs": [
+            {
+                "type": "file",
+                "location": "SQUAD_DIR/train-v1.1.json",
+                "artifact": "dataset",
+                "ex_from": "manual (if hardcoded in the code)",
+                "ex_in_repo": false
+            },
+            {
+              "type": "file",
+              "location": "SQUAD_DIR/dev-v1.1.json",
+              "artifact": "dataset",
+              "ex_from": "manual (if hardcoded in the code)",
+              "ex_in_repo": false
+          },
+          {
+            "type": "file",
+            "location": "GLOVE_DIR/glove.840B.300d.zip",
+            "artifact": "dataset",
+            "ex_from": "manual (if hardcoded in the code)",
+            "ex_in_repo": false
+        }
+        ]
+        },
+        {
+          "cmd": "python train.py",
+          "main": "train.py",
+          "steps": [
+              "training"
+          ],
+          "args_lib": "argparse",
+          "args": [
+            {
+                "names": [
+                    "--log_per_updates"
+                ],
+                "input": true,
+                "dest": "log_per_updates",
+                "ex_has_default": true,
+                "default": 3,
+                "type": "float",
+                "mandatory": false
+            },
+            {
+                "names": [
+                    "--data_file"
+                ],
+                "input": true,
+                "dest": "data_file",
+                "ex_has_default": true,
+                "default": "SQuAD/data.msgpack",
+                "type": "str",
+                "mandatory": false
+            },
+            {
+                "names": [
+                    "--model_dir"
+                ],
+                "input": true,
+                "dest": "model_dir",
+                "ex_has_default": true,
+                "default": "models",
+                "type": "str",
+                "mandatory": false
+            },
+            {
+                "names": [
+                    "--save_last_only"
+                ],
+                "input": false,
+                "dest": "save_last_only",
+                "ex_has_default": true,
+                "default": false,
+                "type": "float",
+                "mandatory": false
+            },
+            {
+                "names": [
+                    "--save_dawn_logs"
+                ],
+                "input": false,
+                "dest": "save_dawn_logs",
+                "ex_has_default": true,
+                "default": false,
+                "type": "float",
+                "mandatory": false
+            },
+            {
+                "names": [
+                    "--seed"
+                ],
+                "input": true,
+                "dest": "seed",
+                "ex_has_default": true,
+                "default": 1013,
+                "type": "float",
+                "mandatory": false
+            },
+            {
+                "names": [
+                    "--cuda"
+                ],
+                "input": true,
+                "dest": "cuda",
+                "ex_has_default": true,
+                "default": false,
+                "type": "float",
+                "mandatory": false
+            },
+            {
+                "names": [
+                    "-e",
+                    "--epochs"
+                ],
+                "input": true,
+                "dest": "epochs",
+                "ex_has_default": true,
+                "default": 40,
+                "type": "float",
+                "mandatory": false
+            },
+            {
+                "names": [
+                    "-bs",
+                    "--batch_size"
+                ],
+                "input": true,
+                "dest": "batch_size",
+                "ex_has_default": true,
+                "default": 32,
+                "type": "float",
+                "mandatory": false
+            },
+            {
+                "names": [
+                    "-rs",
+                    "--resume"
+                ],
+                "input": true,
+                "dest": "resume",
+                "ex_has_default": true,
+                "default": "best_model.pt",
+                "type": "str",
+                "mandatory": false
+            },
+            {
+                "names": [
+                    "-ro",
+                    "--resume_options"
+                ],
+                "input": false,
+                "dest": "resume_options",
+                "ex_has_default": true,
+                "default": false,
+                "type": "float",
+                "mandatory": false
+            },
+            {
+                "names": [
+                    "-rlr",
+                    "--reduce_lr"
+                ],
+                "input": true,
+                "dest": "reduce_lr",
+                "ex_has_default": true,
+                "default": 0.0,
+                "type": "float",
+                "mandatory": false
+            },
+            {
+                "names": [
+                    "-op",
+                    "--optimizer"
+                ],
+                "input": true,
+                "dest": "optimizer",
+                "ex_has_default": true,
+                "default": "adamax",
+                "type": "str",
+                "mandatory": false
+            },
+            {
+                "names": [
+                    "-gc",
+                    "--grad_clipping"
+                ],
+                "input": true,
+                "dest": "grad_clipping",
+                "ex_has_default": true,
+                "default": 10,
+                "type": "float",
+                "mandatory": false
+            },
+            {
+                "names": [
+                    "-wd",
+                    "--weight_decay"
+                ],
+                "input": true,
+                "dest": "weight_decay",
+                "ex_has_default": true,
+                "default": 0,
+                "type": "float",
+                "mandatory": false
+            },
+            {
+                "names": [
+                    "-lr",
+                    "--learning_rate"
+                ],
+                "input": true,
+                "dest": "learning_rate",
+                "ex_has_default": true,
+                "default": 0.1,
+                "type": "float",
+                "mandatory": false
+            },
+            {
+                "names": [
+                    "-mm",
+                    "--momentum"
+                ],
+                "input": true,
+                "dest": "momentum",
+                "ex_has_default": true,
+                "default": 0,
+                "type": "float",
+                "mandatory": false
+            },
+            {
+                "names": [
+                    "-tp",
+                    "--tune_partial"
+                ],
+                "input": true,
+                "dest": "tune_partial",
+                "ex_has_default": true,
+                "default": 1000,
+                "type": "float",
+                "mandatory": false
+            },
+            {
+                "names": [
+                    "--fix_embeddings"
+                ],
+                "input": false,
+                "dest": "fix_embeddings",
+                "ex_has_default": true,
+                "default": false,
+                "type": "float",
+                "mandatory": false
+            },
+            {
+                "names": [
+                    "--rnn_padding"
+                ],
+                "input": false,
+                "dest": "rnn_padding",
+                "ex_has_default": true,
+                "default": false,
+                "type": "float",
+                "mandatory": false
+            },
+            {
+                "names": [
+                    "--question_merge"
+                ],
+                "input": true,
+                "dest": "question_merge",
+                "ex_has_default": true,
+                "default": "self_attn",
+                "type": "str",
+                "mandatory": false
+            },
+            {
+                "names": [
+                    "--doc_layers"
+                ],
+                "input": true,
+                "dest": "doc_layers",
+                "ex_has_default": true,
+                "default": 3,
+                "type": "float",
+                "mandatory": false
+            },
+            {
+                "names": [
+                    "--question_layers"
+                ],
+                "input": true,
+                "dest": "question_layers",
+                "ex_has_default": true,
+                "default": 3,
+                "type": "float",
+                "mandatory": false
+            },
+            {
+                "names": [
+                    "--hidden_size"
+                ],
+                "input": true,
+                "dest": "hidden_size",
+                "ex_has_default": true,
+                "default": 128,
+                "type": "float",
+                "mandatory": false
+            },
+            {
+                "names": [
+                    "--num_features"
+                ],
+                "input": true,
+                "dest": "num_features",
+                "ex_has_default": true,
+                "default": 4,
+                "type": "float",
+                "mandatory": false
+            },
+            {
+                "names": [
+                    "--pos"
+                ],
+                "input": true,
+                "dest": "pos",
+                "ex_has_default": true,
+                "default": true,
+                "type": "float",
+                "mandatory": false
+            },
+            {
+                "names": [
+                    "--ner"
+                ],
+                "input": true,
+                "dest": "ner",
+                "ex_has_default": true,
+                "default": true,
+                "type": "float",
+                "mandatory": false
+            },
+            {
+                "names": [
+                    "--use_qemb"
+                ],
+                "input": true,
+                "dest": "use_qemb",
+                "ex_has_default": true,
+                "default": true,
+                "type": "float",
+                "mandatory": false
+            },
+            {
+                "names": [
+                    "--concat_rnn_layers"
+                ],
+                "input": true,
+                "dest": "concat_rnn_layers",
+                "ex_has_default": true,
+                "default": true,
+                "type": "float",
+                "mandatory": false
+            },
+            {
+                "names": [
+                    "--dropout_emb"
+                ],
+                "input": true,
+                "dest": "dropout_emb",
+                "ex_has_default": true,
+                "default": 0.4,
+                "type": "float",
+                "mandatory": false
+            },
+            {
+                "names": [
+                    "--dropout_rnn"
+                ],
+                "input": true,
+                "dest": "dropout_rnn",
+                "ex_has_default": true,
+                "default": 0.4,
+                "type": "float",
+                "mandatory": false
+            },
+            {
+                "names": [
+                    "--dropout_rnn_output"
+                ],
+                "input": true,
+                "dest": "dropout_rnn_output",
+                "ex_has_default": true,
+                "default": true,
+                "type": "float",
+                "mandatory": false
+            },
+            {
+                "names": [
+                    "--max_len"
+                ],
+                "input": true,
+                "dest": "max_len",
+                "ex_has_default": true,
+                "default": 15,
+                "type": "float",
+                "mandatory": false
+            },
+            {
+                "names": [
+                    "--rnn_type"
+                ],
+                "input": true,
+                "dest": "rnn_type",
+                "ex_has_default": true,
+                "default": "lstm",
+                "type": "str",
+                "mandatory": false
+            }
+        ],
+          "ins": [
+              {
+              "type": "file",
+              "location": "https://rajpurkar.github.io/SQuAD-explorer/dataset/train-v1.1.json",
+              "artifact": "dataset",
+              "ex_from": "manual",
+              "ex_in_repo": false
+              },
+              {
+                "type": "file",
+                "location": "https://rajpurkar.github.io/SQuAD-explorer/dataset/dev-v1.1.json",
+                "artifact": "dataset",
+                "ex_from": "manual",
+                "ex_in_repo": false
+                },
+                {
+                  "type": "file",
+                  "location": "http://nlp.stanford.edu/data/glove.840B.300d.zip",
+                  "artifact": "dataset",
+                  "ex_from": "manual",
+                  "ex_in_repo": false
+                  }
+          ],
+          "outs": [
+              {
+                  "type": "file",
+                  "location": "SQUAD_DIR/train-v1.1.json",
+                  "artifact": "dataset",
+                  "ex_from": "manual (if hardcoded in the code)",
+                  "ex_in_repo": false
+              },
+              {
+                "type": "file",
+                "location": "SQUAD_DIR/dev-v1.1.json",
+                "artifact": "dataset",
+                "ex_from": "manual (if hardcoded in the code)",
+                "ex_in_repo": false
+            },
+            {
+              "type": "file",
+              "location": "GLOVE_DIR/glove.840B.300d.zip",
+              "artifact": "dataset",
+              "ex_from": "manual (if hardcoded in the code)",
+              "ex_in_repo": false
+          }
+          ]
+          }
+    ],
+  "ex_metrics": {
+    "metrics_files": [
+        {
+            "file_name": "",
+            "metrics": [""]
+        }
+    ],
+    "prints": [""],
+    "plots": [""],
+    "others": [
+        {
+            "name": "",
+            "in_repo": "",
+            "metrics": ""
+        }
+    ]
+  },
+  "ex_hyperparams": {
+    "from_cmd": ["e","bs"],
+    "config_files": [
+        {
+            "name": "",
+            "in_repo": "",
+            "hyperparams": [""]
+        }
+    ],
+    "in_code": [
+      "epoch"
+    ],
+    "others": [
+        {
+            "name": "",
+            "metrics": ""
+        }
+    ]
+  }
+}
