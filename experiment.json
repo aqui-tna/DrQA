@@ -17,11 +17,66 @@
       "reason": "The project uses deprecated functions and libraries"
   },
   "entries": [
+    {
+        "cmd": "bash download.sh",
+        "main": "download.sh",
+        "steps": [
+            "download-data"
+        ],
+        "args_lib": null,
+        "args": [],
+        "ins": [
+            {
+            "type": "link",
+            "location": "https://rajpurkar.github.io/SQuAD-explorer/dataset/train-v1.1.json",
+            "artifact": "dataset",
+            "ex_from": "manual",
+            "ex_in_repo": false
+            },
+            {
+              "type": "link",
+              "location": "https://rajpurkar.github.io/SQuAD-explorer/dataset/dev-v1.1.json",
+              "artifact": "dataset",
+              "ex_from": "manual",
+              "ex_in_repo": false
+              },
+              {
+                "type": "link",
+                "location": "http://nlp.stanford.edu/data/glove.840B.300d.zip",
+                "artifact": "dataset",
+                "ex_from": "manual",
+                "ex_in_repo": false
+                }
+        ],
+        "outs": [
+            {
+                "type": "file",
+                "location": "SQUAD/train-v1.1.json",
+                "artifact": "dataset",
+                "ex_from": "manual",
+                "ex_in_repo": false
+            },
+            {
+              "type": "file",
+              "location": "SQUAD/dev-v1.1.json",
+              "artifact": "dataset",
+              "ex_from": "manual",
+              "ex_in_repo": false
+          },
+          {
+            "type": "file",
+            "location": "GLOVE/glove.840B.300d.zip",
+            "artifact": "dataset",
+            "ex_from": "manual",
+            "ex_in_repo": false
+        }
+        ]
+        },
       {
         "cmd": "python prepro.py",
         "main": "prepro.py",
         "steps": [
-            "prepare the data"
+            "data"
         ],
         "args_lib": "argparse",
         "args": [
@@ -128,48 +183,34 @@
         "ins": [
             {
             "type": "file",
-            "location": "https://rajpurkar.github.io/SQuAD-explorer/dataset/train-v1.1.json",
+            "location": "SQuADtrain-v1.1.json",
             "artifact": "dataset",
-            "ex_from": "manual",
+            "ex_from": "cmd",
             "ex_in_repo": false
             },
             {
               "type": "file",
-              "location": "https://rajpurkar.github.io/SQuAD-explorer/dataset/dev-v1.1.json",
+              "location": "SQuAD/dev-v1.1.json",
               "artifact": "dataset",
-              "ex_from": "manual",
+              "ex_from": "cmd",
               "ex_in_repo": false
               },
               {
-                "type": "file",
-                "location": "http://nlp.stanford.edu/data/glove.840B.300d.zip",
+                "type": "link",
+                "location": "glove/glove.840B.300d.zip",
                 "artifact": "dataset",
-                "ex_from": "manual",
+                "ex_from": "cmd",
                 "ex_in_repo": false
                 }
         ],
         "outs": [
             {
-                "type": "file",
-                "location": "SQUAD_DIR/train-v1.1.json",
+                "type": "dir",
+                "location": "SQuAD",
                 "artifact": "dataset",
-                "ex_from": "manual (if hardcoded in the code)",
+                "ex_from": "manual",
                 "ex_in_repo": false
-            },
-            {
-              "type": "file",
-              "location": "SQUAD_DIR/dev-v1.1.json",
-              "artifact": "dataset",
-              "ex_from": "manual (if hardcoded in the code)",
-              "ex_in_repo": false
-          },
-          {
-            "type": "file",
-            "location": "GLOVE_DIR/glove.840B.300d.zip",
-            "artifact": "dataset",
-            "ex_from": "manual (if hardcoded in the code)",
-            "ex_in_repo": false
-        }
+            }
         ]
         },
         {
@@ -568,86 +609,43 @@
         ],
           "ins": [
               {
-              "type": "file",
-              "location": "https://rajpurkar.github.io/SQuAD-explorer/dataset/train-v1.1.json",
+              "type": "dir",
+              "location": "SQuAD",
               "artifact": "dataset",
-              "ex_from": "manual",
+              "ex_from": "cmd",
               "ex_in_repo": false
-              },
-              {
-                "type": "file",
-                "location": "https://rajpurkar.github.io/SQuAD-explorer/dataset/dev-v1.1.json",
-                "artifact": "dataset",
-                "ex_from": "manual",
-                "ex_in_repo": false
-                },
-                {
-                  "type": "file",
-                  "location": "http://nlp.stanford.edu/data/glove.840B.300d.zip",
-                  "artifact": "dataset",
-                  "ex_from": "manual",
-                  "ex_in_repo": false
-                  }
-          ],
+              }],
           "outs": [
               {
-                  "type": "file",
-                  "location": "SQUAD_DIR/train-v1.1.json",
-                  "artifact": "dataset",
-                  "ex_from": "manual (if hardcoded in the code)",
+                  "type": "dir",
+                  "location": "models",
+                  "artifact": "model",
+                  "ex_from": "cmd",
                   "ex_in_repo": false
-              },
-              {
-                "type": "file",
-                "location": "SQUAD_DIR/dev-v1.1.json",
-                "artifact": "dataset",
-                "ex_from": "manual (if hardcoded in the code)",
-                "ex_in_repo": false
-            },
-            {
-              "type": "file",
-              "location": "GLOVE_DIR/glove.840B.300d.zip",
-              "artifact": "dataset",
-              "ex_from": "manual (if hardcoded in the code)",
-              "ex_in_repo": false
-          }
-          ]
+              }]
           }
     ],
   "ex_metrics": {
     "metrics_files": [
         {
-            "file_name": "",
-            "metrics": [""]
+            "file_name": "unknown",
+            "metrics": ["f1", "em", "best_eval"]
         }
     ],
-    "prints": [""],
-    "plots": [""],
+    "prints": [],
+    "plots": [],
     "others": [
         {
-            "name": "",
-            "in_repo": "",
-            "metrics": ""
+            "name": "log",
+            "in_repo": false,
+            "metrics": ["f1", "em", "best_eval"]
         }
     ]
   },
   "ex_hyperparams": {
-    "from_cmd": ["e","bs"],
-    "config_files": [
-        {
-            "name": "",
-            "in_repo": "",
-            "hyperparams": [""]
-        }
-    ],
-    "in_code": [
-      "epoch"
-    ],
-    "others": [
-        {
-            "name": "",
-            "metrics": ""
-        }
-    ]
+    "from_cmd": ["e","bs", "epochs"],
+    "config_files": [],
+    "in_code": [],
+    "others": []
   }
 }
